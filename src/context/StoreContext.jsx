@@ -1,10 +1,12 @@
 import PropTypes from "prop-types";
-import { createContext, useMemo, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 import { food_list } from "../assets/assets";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
+  const url = "http://localhost:5000/api";
+  const [token, setToken] = useState("");
 
   const addToCart = (itemId) => {
     if (!cartItems[itemId]) {
@@ -36,6 +38,12 @@ const StoreContextProvider = (props) => {
     return total;
   };
 
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      setToken(localStorage.getItem("token"));
+    }
+  });
+
   const contextValue = useMemo(
     () => ({
       food_list,
@@ -44,6 +52,9 @@ const StoreContextProvider = (props) => {
       addToCart,
       removeFromCart,
       getTotalCartAmount,
+      url,
+      token,
+      setToken,
     }),
     [cartItems]
   );

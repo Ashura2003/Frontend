@@ -8,7 +8,8 @@ import "./Navbar.css";
 const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("Menu");
 
-  const { getTotalCartAmount } = useContext(StoreContext);
+  const { getTotalCartAmount, token, setToken } = useContext(StoreContext);
+  const getToken = localStorage.getItem("token");
 
   return (
     <div className="navbar">
@@ -45,15 +46,32 @@ const Navbar = ({ setShowLogin }) => {
           <Link to="/cart">
             <img src={assets.basket_icon} alt="" />
           </Link>
-          <div className={getTotalCartAmount()===0 ? "" : "dot"}></div>
+          <div className={getTotalCartAmount() === 0 ? "" : "dot"}></div>
         </div>
-        <button
-          onClick={() => {
-            setShowLogin(true);
-          }}
-        >
-          Sign In
-        </button>
+        {!getToken ? (
+          <button
+            onClick={() => {
+              setShowLogin(true);
+            }}
+          >
+            Sign In
+          </button>
+        ) : (
+          <div className="navbar-profile">
+            <img src={assets.profile_icon} alt="" />
+            <ul className="nav-profile-dropdown">
+              <li>
+                <img src={assets.bag_icon} alt="" />
+                <p>Orders</p>
+              </li>
+              <hr />
+              <li>
+                <img src={assets.logout_icon} alt="" />
+                <p>Logout</p>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
