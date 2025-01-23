@@ -51,6 +51,7 @@ import cross_icon from "./cross_icon.png";
 import facebook_icon from "./facebook_icon.png";
 import logout_icon from "./logout_icon.png";
 import parcel_icon from "./parcel_icon.png";
+import profile_dropdown from "./profile_dropdown.png";
 import profile_icon from "./profile_icon.png";
 import rating_starts from "./rating_starts.png";
 import remove_icon_red from "./remove_icon_red.png";
@@ -74,6 +75,7 @@ export const assets = {
   logout_icon,
   bag_icon,
   parcel_icon,
+  profile_dropdown,
 };
 
 export const menu_list = [

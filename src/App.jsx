@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
+import AdminDashboard from "./admin/pages/AdminDashboard.jsx";
 import AuthPopup from "./components/authPopup/AuthPopup.jsx";
 import Footer from "./components/footer/footer.jsx";
 import Navbar from "./components/navbar/Navbar.jsx";
@@ -10,18 +11,32 @@ import PlaceOrder from "./pages/place order/PlaceOrder.jsx";
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
 
+  // Get the current location
+  const location = useLocation();
+
+  // Define routes where Navbar and Footer should not appear
+  const hideLayout = location.pathname.startsWith("/admin");
+
   return (
     <>
-      {showLogin ? <AuthPopup setShowLogin={setShowLogin} /> : <></>}
+      {showLogin && <AuthPopup setShowLogin={setShowLogin} />}
       <div className="app">
-        <Navbar setShowLogin={setShowLogin} />
+        {/* Conditionally render Navbar */}
+        {!hideLayout && <Navbar setShowLogin={setShowLogin} />}
+
         <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/cart" element={<Cart />}></Route>
-          <Route path="/order" element={<PlaceOrder />}></Route>
+          {/* Public routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/order" element={<PlaceOrder />} />
+
+          {/* Admin routes */}
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
+
+        {/* Conditionally render Footer */}
+        {!hideLayout && <Footer />}
       </div>
-      <Footer />
     </>
   );
 };

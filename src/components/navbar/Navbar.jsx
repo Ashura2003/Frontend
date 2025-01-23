@@ -8,8 +8,13 @@ import "./Navbar.css";
 const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("Menu");
 
-  const { getTotalCartAmount, token, setToken } = useContext(StoreContext);
+  const { getTotalCartAmount } = useContext(StoreContext);
   const getToken = localStorage.getItem("token");
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    window.location.reload();
+  };
 
   return (
     <div className="navbar">
@@ -61,13 +66,17 @@ const Navbar = ({ setShowLogin }) => {
             <img src={assets.profile_icon} alt="" />
             <ul className="nav-profile-dropdown">
               <li>
+                <img src={assets.profile_dropdown} alt="" />
+                <p>Profile</p>
+              </li>
+              <li>
                 <img src={assets.bag_icon} alt="" />
                 <p>Orders</p>
               </li>
               <hr />
               <li>
                 <img src={assets.logout_icon} alt="" />
-                <p>Logout</p>
+                <p onClick={logout}>Logout</p>
               </li>
             </ul>
           </div>
