@@ -6,7 +6,7 @@ import { StoreContext } from "../../context/StoreContext";
 import "./AuthPopup.css";
 
 const AuthPopup = ({ setShowLogin }) => {
-  const { url, token, setToken } = useContext(StoreContext);
+  const { url, token } = useContext(StoreContext);
 
   const [currState, setCurrentState] = useState("Login");
   const [data, setData] = useState({
@@ -31,7 +31,6 @@ const AuthPopup = ({ setShowLogin }) => {
       const response = await axios.post(newUrl, data);
 
       if (response.status === 200) {
-        setToken(response.data.token);
         localStorage.setItem("token", response.data.token);
         setShowLogin(false);
       } else {

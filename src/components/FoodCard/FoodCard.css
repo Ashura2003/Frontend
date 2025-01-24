@@ -63,6 +63,7 @@
     right: 15px;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
     padding: 6px;
     border-radius: 50px;
@@ -72,4 +73,12 @@
 
 .food-item-quantity img{
     width: 30px;
+    cursor: pointer;
+}
+.food-item-quantity p {
+    margin: 0; /* Remove extra spacing */
+    font-size: 16px; /* Adjust font size for better alignment */
+    font-weight: bold; /* Make it stand out */
+    text-align: center; /* Center text alignment */
+    color: black; /* Set text color */
 }

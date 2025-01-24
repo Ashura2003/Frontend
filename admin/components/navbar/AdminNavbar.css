@@ -1,0 +1,15 @@
+.admin-navbar{
+ display: flex;
+ justify-content: space-between;
+    align-items: center;
+    padding: 8px 4%;   
+    background-color: #FF851B;
+}
+
+.admin-navbar .logo{
+    width: max(10%,80px);
+}
+
+.admin-navbar .profile{
+    width: 40px;
+}

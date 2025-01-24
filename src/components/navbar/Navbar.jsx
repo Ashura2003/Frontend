@@ -6,7 +6,7 @@ import { StoreContext } from "../../context/StoreContext";
 import "./Navbar.css";
 
 const Navbar = ({ setShowLogin }) => {
-  const [menu, setMenu] = useState("Menu");
+  const [menu, setMenu] = useState("Home");
 
   const { getTotalCartAmount } = useContext(StoreContext);
   const getToken = localStorage.getItem("token");
@@ -69,6 +69,7 @@ const Navbar = ({ setShowLogin }) => {
                 <img src={assets.profile_dropdown} alt="" />
                 <p>Profile</p>
               </li>
+              <hr />
               <li>
                 <img src={assets.bag_icon} alt="" />
                 <p>Orders</p>

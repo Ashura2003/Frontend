@@ -5,13 +5,16 @@ import { StoreContext } from "../../context/StoreContext";
 import "./FoodCard.css";
 
 const FoodCard = ({ id, name, price, description, image }) => {
-  
   const { cartItems, addToCart, removeFromCart } = useContext(StoreContext);
 
   return (
     <div className="food-item">
       <div className="food-item-img-container">
-        <img src={image} alt="" className="food-item-image" />
+        <img
+          src={`http://localhost:5000/uploads/${image}`}
+          alt=""
+          className="food-item-image"
+        />
         {!cartItems[id] ? (
           <img
             className="add"
@@ -38,10 +41,9 @@ const FoodCard = ({ id, name, price, description, image }) => {
       <div className="food-item-info">
         <div className="food-item-name-rating">
           <p>{name}</p>
-          <img src={assets.rating_starts} alt="" />
         </div>
         <p className="food-item-description">{description}</p>
-        <p className="food-item-price">${price}</p>
+        <p className="food-item-price">Rs.{price}</p>
       </div>
     </div>
   );
