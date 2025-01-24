@@ -28,8 +28,11 @@ const Cart = () => {
             return (
               <div>
                 <div className="cart-items-title cart-items-items">
-                  <img src={item.image} alt="" />
-                  <p>{item.name}</p>
+                  <img
+                    src={`http://localhost:5000/uploads/${item.image}`}
+                    alt=""
+                  />
+                  <p>{item.foodName}</p>
                   <p>Rs. {item.price}</p>
                   <p>{cartItems[item._id]}</p>
                   <p>Rs. {item.price * cartItems[item._id]}</p>

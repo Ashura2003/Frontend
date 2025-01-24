@@ -8,7 +8,7 @@ import "./FoodDisplay.css";
 
 const FoodDisplay = ({ category }) => {
   const [food_list, setFoods] = useState([]);
-  const { url, loadCartData } = useContext(StoreContext);
+  const { url, loadCartData, setFoodList } = useContext(StoreContext);
 
   useEffect(() => {
     async function fetchData() {
@@ -18,6 +18,7 @@ const FoodDisplay = ({ category }) => {
 
         if (response.status === 200) {
           setFoods(response.data.food);
+          setFoodList(response.data.food);
           console.log(food_list);
           await loadCartData(localStorage.getItem("token"));
         } else {

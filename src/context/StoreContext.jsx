@@ -58,6 +58,7 @@ const StoreContextProvider = (props) => {
 
   const getTotalCartAmount = () => {
     let total = 0;
+    console.log("The cart items are:", cartItems);
     for (const item in cartItems) {
       if (cartItems[item] > 0) {
         let itemInfo = food_list.find((food) => food._id === item);
@@ -74,10 +75,12 @@ const StoreContextProvider = (props) => {
   const contextValue = useMemo(
     () => ({
       cartItems,
+      food_list,
       setCartItems,
       addToCart,
       removeFromCart,
       getTotalCartAmount,
+      setFoodList,
       url,
       token,
       loadCartData,
