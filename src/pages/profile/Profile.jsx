@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import stockImage from "../../assets/stock-profile.jpg"; // Add a stock image to your assets folder
+import { toast } from "react-toastify"; // Add a stock image to your assets folder
 import { StoreContext } from "../../context/StoreContext";
 import "./Profile.css";
 
