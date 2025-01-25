@@ -11,6 +11,7 @@ import Cart from "./pages/cart/Cart.jsx";
 import Home from "./pages/home/Home.jsx";
 import MyOrders from "./pages/myorders/MyOrders.jsx";
 import PlaceOrder from "./pages/place order/PlaceOrder.jsx";
+import Profile from "./pages/profile/Profile.jsx";
 import Verify from "./pages/verify/Verify.jsx";
 
 const App = () => {
@@ -38,6 +39,7 @@ const App = () => {
             <Route path="/order" element={<PlaceOrder />} />
             <Route path="/verify" element={<Verify />} />
             <Route path="/myorder" element={<MyOrders />} />
+            <Route path="/profile" element={<Profile />} />
 
             {/* Admin routes */}
             <Route path="/admin" element={<AdminDashboard />} />
