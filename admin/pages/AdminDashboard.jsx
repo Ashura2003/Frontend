@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { StoreContext } from "../../src/context/StoreContext";
 
 const AdminDashboard = () => {
@@ -13,6 +13,7 @@ const AdminDashboard = () => {
   const [previewImage, setPreviewImage] = useState("");
 
   const [foods, setFoods] = useState([]);
+  const navigate = useNavigate();
 
   const { url } = useContext(StoreContext);
 
@@ -112,9 +113,9 @@ const AdminDashboard = () => {
             Add Product
           </button>
 
-          <button type="button" className="btn btn-success">
+          <Link to={"/admin/orders"} type="button" className="btn btn-success">
             View Orders
-          </button>
+          </Link>
 
           <div
             className="modal fade"

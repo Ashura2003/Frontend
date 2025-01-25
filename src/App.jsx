@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import AdminNavbar from "../admin/components/navbar/AdminNavbar.jsx";
 import AdminDashboard from "../admin/pages/AdminDashboard.jsx";
+import Orders from "../admin/pages/orders/Orders.jsx";
 import UpdateFood from "../admin/pages/updatefood/Updatefood.jsx";
 import AuthPopup from "./components/authPopup/AuthPopup.jsx";
 import Footer from "./components/footer/Footer.jsx";
@@ -41,6 +42,7 @@ const App = () => {
             {/* Admin routes */}
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/update/:id" element={<UpdateFood />} />
+            <Route path="/admin/orders" element={<Orders />} />
           </Routes>
         </div>
 
