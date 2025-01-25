@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { StoreContext } from "../../src/context/StoreContext";
 
 const AdminDashboard = () => {
@@ -26,7 +27,7 @@ const AdminDashboard = () => {
         if (response.status === 200) {
           setFoods(response.data.food);
         } else {
-          alert(response.data.message);
+          toast.warn(response.data.message);
         }
       } catch (error) {
         console.log(error);
@@ -45,16 +46,16 @@ const AdminDashboard = () => {
         let response = await axios.delete(newUrl);
         if (response.status === 200) {
           window.location.reload();
-          alert(response.data.message);
+          toast.success(response.data.message);
         }
       } catch (error) {
         if (error.response) {
           if (error.response.status === 404) {
-            alert(error.response.data.message);
+            toast.error(error.response.data.message);
           } else if (error.response.status === 500) {
-            alert(error.response.data.message);
+            toast.error(error.response.data.message);
           } else {
-            alert("Something went wrong");
+            toast.error("Something went wrong");
           }
         }
       }
@@ -81,20 +82,20 @@ const AdminDashboard = () => {
 
       if (response.status === 201) {
         window.location.reload();
-        alert(response.data.message);
+        toast.success(response.data.message);
       }
     } catch (error) {
       console.log(error);
       if (error.response) {
         if (error.response.status === 400) {
-          alert(error.response.data.message);
+          toast.error(error.response.data.message);
         } else if (error.response.status === 500) {
-          alert(error.response.data.message);
+          toast.error(error.response.data.message);
         } else {
-          alert("Something went wrong");
+          toast.error("Something went wrong");
         }
       } else {
-        alert("Something went wrong");
+        toast.error("Something went wrong");
       }
     }
   };

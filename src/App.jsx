@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import AdminNavbar from "../admin/components/navbar/AdminNavbar.jsx";
 import AdminDashboard from "../admin/pages/AdminDashboard.jsx";
 import Orders from "../admin/pages/orders/Orders.jsx";
@@ -27,6 +28,8 @@ const App = () => {
       <div className="app">
         {/* Conditionally render Navbar for public routes */}
         {!isAdminRoute && <Navbar setShowLogin={setShowLogin} />}
+
+        <ToastContainer />
 
         <div className={isAdminRoute ? "admin-layout" : ""}>
           {/* Conditionally render AdminNavbar */}

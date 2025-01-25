@@ -1,6 +1,7 @@
 import axios from "axios";
 import "react";
 import { useContext, useState } from "react";
+import { toast } from "react-toastify";
 import { assets } from "../../assets/assets";
 import { StoreContext } from "../../context/StoreContext";
 import "./AuthPopup.css";
@@ -32,13 +33,14 @@ const AuthPopup = ({ setShowLogin }) => {
 
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
+        toast.success(response.data.message);
         setShowLogin(false);
       } else {
-        alert(response.data.message);
+        toast.error(response.data.message);
       }
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || "Internal Server Error");
+      toast.error(err.response?.data?.message || "Internal Server Error");
     }
   };
 

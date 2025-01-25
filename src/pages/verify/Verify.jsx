@@ -4,6 +4,7 @@ import { useContext, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { StoreContext } from "../../context/StoreContext";
 import "./Verify.css";
+import { toast } from "react-toastify";
 
 const Verify = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -24,9 +25,9 @@ const Verify = () => {
 
       if (response.status === 200) {
         navigate("/myorder");
-        alert(response.data.message);
+        toast.success(response.data.message);
       } else {
-        alert("Payment verification failed. Redirecting to cart.");
+        toast.error("Payment verification failed. Redirecting to cart.");
         navigate("/cart");
       }
     } catch (error) {

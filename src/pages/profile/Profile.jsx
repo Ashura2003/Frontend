@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import stockImage from "../../assets/stock-profile.jpg"; // Add a stock image to your assets folder
 import { StoreContext } from "../../context/StoreContext";
 import "./Profile.css";
-import stockImage from "../../assets/stock-profile.jpg"; // Add a stock image to your assets folder
 
 const Profile = () => {
   const [user, setUser] = useState({});
@@ -39,9 +40,12 @@ const Profile = () => {
       const response = await axios.post(`${url}/user/edit_user`, formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      alert(response.data.message);
-      setEditMode(false);
-      fetchUserProfile();
+      if (response.status === 200) {
+        toast.success(response.data.message);
+        setEditMode(false);
+      } else {
+        toast.error(response.data.message);
+      }
     } catch (error) {
       console.error("Error editing profile:", error);
     }
@@ -56,9 +60,12 @@ const Profile = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      alert(response.data.message);
-      localStorage.removeItem("token");
-      window.location.href = "/login"; // Redirect to login page
+      if (response.status === 200) {
+        localStorage.removeItem("token");
+        window.location.replace("/login");
+      } else {
+        toast.error(response.data.message);
+      }
     } catch (error) {
       console.error("Error deleting account:", error);
     }
@@ -93,7 +100,10 @@ const Profile = () => {
               </div>
             </div>
             <div className="profile-buttons">
-              <button onClick={() => setEditMode(true)} className="btn edit-btn">
+              <button
+                onClick={() => setEditMode(true)}
+                className="btn edit-btn"
+              >
                 Edit Profile
               </button>
               <button onClick={handleDelete} className="btn delete-btn">

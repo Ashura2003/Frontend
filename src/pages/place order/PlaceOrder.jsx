@@ -3,6 +3,7 @@ import "react";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { StoreContext } from "../../context/StoreContext";
 import "./PlaceOrder.css";
 
@@ -58,7 +59,7 @@ const PlaceOrder = () => {
       const { session_url } = response.data;
       window.location.replace(session_url);
     } else {
-      alert(response.data.message);
+      toast.error(response.data.message);
     }
     console.log("Ordered Items are:", orderItems);
   };

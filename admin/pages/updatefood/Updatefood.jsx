@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { StoreContext } from "../../../src/context/StoreContext";
 
 const UpdateFood = () => {
@@ -27,8 +28,9 @@ const UpdateFood = () => {
           setFoodCategory(response.data.food.category);
           setFoodDescription(response.data.food.description);
           setOldImage(response.data.food.image);
+          toast.success(response.data.message);
         } else {
-          alert(response.data.message);
+          toast.error(response.data.message);
         }
       } catch (error) {
         console.log(error);
