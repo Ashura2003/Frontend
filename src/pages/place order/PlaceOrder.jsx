@@ -1,27 +1,123 @@
 import "react";
 
-import { useContext } from "react";
+import axios from "axios";
+import { useContext, useState } from "react";
 import { StoreContext } from "../../context/StoreContext";
 import "./PlaceOrder.css";
 
 const PlaceOrder = () => {
-  const { getTotalCartAmount } = useContext(StoreContext);
+  const { getTotalCartAmount, food_list, cartItems, url } =
+    useContext(StoreContext);
+  const token = localStorage.getItem("token");
+
+  const [data, setData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    location: "",
+    city: "",
+    phone: "",
+  });
+
+  const onChangeHandler = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setData((data) => ({
+      ...data,
+      [name]: value,
+    }));
+  };
+
+  const placeOrderHandler = async (e) => {
+    e.preventDefault();
+    let orderItems = [];
+    food_list.forEach((item) => {
+      if (cartItems[item._id] > 0) {
+        orderItems.push({
+          name: item.foodName, // Ensure name exists
+          price: item.price, // Ensure price exists and is a number
+          quantity: cartItems[item._id], // Ensure quantity is valid
+        });
+      }
+    });
+
+    console.log("Order Items are:", orderItems);
+
+    let orderData = {
+      address: data,
+      items: orderItems,
+      amount: getTotalCartAmount() + 2,
+    };
+    let response = await axios.post(url + "/order/placeOrder", orderData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (response.status === 200) {
+      const { session_url } = response.data;
+      window.location.replace(session_url);
+    } else {
+      alert(response.data.message);
+    }
+    console.log("Ordered Items are:", orderItems);
+  };
 
   return (
-    <form className="place-order">
+    <form onSubmit={placeOrderHandler} className="place-order">
       <div className="place-order-left">
         <p className="title">Delivery Information</p>
         <div className="multi-fields">
-          <input type="text" placeholder="First Name" />
-          <input type="text" placeholder="Last Name" />
+          <input
+            required
+            name="firstName"
+            onChange={onChangeHandler}
+            value={data.firstName}
+            type="text"
+            placeholder="First Name"
+          />
+          <input
+            required
+            name="lastName"
+            onChange={onChangeHandler}
+            value={data.lastName}
+            type="text"
+            placeholder="Last Name"
+          />
         </div>
-        <input type="text" placeholder="Email address" />
-        <input type="text" placeholder="Location" />
+        <input
+          required
+          name="email"
+          onChange={onChangeHandler}
+          value={data.email}
+          type="text"
+          placeholder="Email address"
+        />
+        <input
+          required
+          name="location"
+          onChange={onChangeHandler}
+          value={data.location}
+          type="text"
+          placeholder="Location"
+        />
 
-        <input type="text" placeholder="City" />
-        <input type="text" placeholder="State" />
+        <input
+          required
+          name="city"
+          onChange={onChangeHandler}
+          value={data.city}
+          type="text"
+          placeholder="City"
+        />
 
-        <input type="text" placeholder="Phone" />
+        <input
+          required
+          name="phone"
+          onChange={onChangeHandler}
+          value={data.phone}
+          type="text"
+          placeholder="Phone"
+        />
       </div>
       <div className="place-order-right">
         <div className="cart-total">
@@ -45,7 +141,7 @@ const PlaceOrder = () => {
             </div>
             <hr />
           </div>
-          <button>Proceed to Payment</button>
+          <button type="submit">Proceed to Payment</button>
         </div>
       </div>
     </form>

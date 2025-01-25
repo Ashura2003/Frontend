@@ -1,6 +1,6 @@
 import axios from "axios";
 import PropTypes from "prop-types";
-import { createContext, useMemo, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 
 export const StoreContext = createContext(null);
 
@@ -31,6 +31,26 @@ const StoreContextProvider = (props) => {
       );
     }
   };
+
+  useEffect(() => {
+    async function fetchData() {
+      let newUrl = `${url}/food/getFood`;
+      try {
+        const response = await axios.get(newUrl);
+
+        if (response.status === 200) {
+          setFoodList(response.data.food);
+          console.log(food_list);
+          await loadCartData(localStorage.getItem("token"));
+        } else {
+          alert(response.data.message);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, []);
 
   const removeFromCart = async (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
