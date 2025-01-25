@@ -70,10 +70,12 @@ const Navbar = ({ setShowLogin }) => {
                 <p>Profile</p>
               </li>
               <hr />
-              <li>
-                <img src={assets.bag_icon} alt="" />
-                <p>Orders</p>
-              </li>
+              <Link to={"/myorder"}>
+                <li>
+                  <img src={assets.bag_icon} alt="" />
+                  <p>Orders</p>
+                </li>
+              </Link>
               <hr />
               <li>
                 <img src={assets.logout_icon} alt="" />

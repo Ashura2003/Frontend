@@ -34,6 +34,7 @@ const StoreContextProvider = (props) => {
 
   useEffect(() => {
     async function fetchData() {
+      console.log("token:", token);
       let newUrl = `${url}/food/getFood`;
       try {
         const response = await axios.get(newUrl);
