@@ -31,37 +31,43 @@ const PlaceOrder = () => {
   };
 
   const placeOrderHandler = async (e) => {
-    e.preventDefault();
-    let orderItems = [];
-    food_list.forEach((item) => {
-      if (cartItems[item._id] > 0) {
-        orderItems.push({
-          name: item.foodName, // Ensure name exists
-          price: item.price, // Ensure price exists and is a number
-          quantity: cartItems[item._id], // Ensure quantity is valid
-        });
+    const confirmOrder = window.confirm(
+      "Are you sure you want to place order?"
+    );
+
+    if (confirmOrder) {
+      e.preventDefault();
+      let orderItems = [];
+      food_list.forEach((item) => {
+        if (cartItems[item._id] > 0) {
+          orderItems.push({
+            name: item.foodName, // Ensure name exists
+            price: item.price, // Ensure price exists and is a number
+            quantity: cartItems[item._id], // Ensure quantity is valid
+          });
+        }
+      });
+
+      let orderData = {
+        address: data,
+        items: orderItems,
+        amount: getTotalCartAmount() + 2,
+      };
+      let response = await axios.post(url + "/order/placeOrder", orderData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        const { session_url } = response.data;
+        window.location.replace(session_url);
+      } else {
+        toast.error(response.data.message);
       }
-    });
-
-    console.log("Order Items are:", orderItems);
-
-    let orderData = {
-      address: data,
-      items: orderItems,
-      amount: getTotalCartAmount() + 2,
-    };
-    let response = await axios.post(url + "/order/placeOrder", orderData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (response.status === 200) {
-      const { session_url } = response.data;
-      window.location.replace(session_url);
+      console.log("Ordered Items are:", orderItems);
     } else {
-      toast.error(response.data.message);
+      return;
     }
-    console.log("Ordered Items are:", orderItems);
   };
 
   const navigate = useNavigate();
