@@ -1,6 +1,7 @@
 import "react";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { assets } from "../../assets/assets";
 import { StoreContext } from "../../context/StoreContext";
 import "./Navbar.css";
@@ -12,8 +13,14 @@ const Navbar = ({ setShowLogin }) => {
   const getToken = localStorage.getItem("token");
 
   const logout = () => {
-    localStorage.removeItem("token");
-    window.location.reload();
+    const confirmLogout = window.confirm("Are you sure you want to logout?");
+    if (confirmLogout) {
+      localStorage.removeItem("token");
+      window.location.reload();
+      toast.success("Logged out successfully");
+    } else {
+      return;
+    }
   };
 
   return (
