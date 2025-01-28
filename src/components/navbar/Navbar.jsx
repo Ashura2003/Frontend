@@ -1,6 +1,6 @@
 import "react";
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { assets } from "../../assets/assets";
 import { StoreContext } from "../../context/StoreContext";
@@ -11,12 +11,13 @@ const Navbar = ({ setShowLogin }) => {
 
   const { getTotalCartAmount } = useContext(StoreContext);
   const getToken = localStorage.getItem("token");
+  const navigate = useNavigate();
 
   const logout = () => {
     const confirmLogout = window.confirm("Are you sure you want to logout?");
     if (confirmLogout) {
       localStorage.removeItem("token");
-      window.location.reload();
+      navigate("/");
       toast.success("Logged out successfully");
     } else {
       return;

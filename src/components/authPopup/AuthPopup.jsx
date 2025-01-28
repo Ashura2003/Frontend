@@ -16,6 +16,55 @@ const AuthPopup = ({ setShowLogin }) => {
     phone: "",
     password: "",
   });
+  const [otp, setOtp] = useState("");
+  const [isSentOtp, setIsSentOtp] = useState(false);
+  const [showOtp, setShowOtp] = useState(false);
+  const [phone, setPhone] = useState("");
+  const [resetPassword, setResetPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [show, setShow] = useState(false);
+
+  const handleReset = async (e) => {
+    e.preventDefault();
+    // Add your forgot password logic here
+    if (resetPassword !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    const response = await axios.post(`${url}/user/reset_password`, {
+      phone: phone,
+      otp: otp,
+      password: resetPassword,
+    });
+
+    if (response.status === 200) {
+      toast.success(response.data.message);
+      setShow(false);
+    } else {
+      toast.error(response.data.message);
+    }
+  };
+
+  const sentOtp = async (e) => {
+    e.preventDefault();
+    // Add your sent otp logic here
+    if (phone.trim === "") {
+      toast.error("Please enter phone number");
+      return;
+    }
+
+    const response = await axios.post(`${url}/user/forgot_password`, {
+      phone: phone,
+    });
+
+    if (response.status === 200) {
+      toast.success(response.data.message);
+      setIsSentOtp(true);
+    } else {
+      toast.error(response.data.message);
+    }
+  };
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -96,6 +145,137 @@ const AuthPopup = ({ setShowLogin }) => {
         <button type="submit">
           {currState === "Sign Up" ? "Create account" : "Login"}
         </button>
+        <p>
+          {currState === "Login" ? (
+            <>
+              <span onClick={() => setShow(true)}>Forgot Password</span>
+              <div
+                className={`modal fade ${show ? "show" : ""}`}
+                style={{ display: show ? "block" : "none" }}
+                id="exampleModal"
+                tabIndex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden={!show}
+              >
+                <div className="modal-dialog">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h1 className="modal-title fs-5" id="exampleModalLabel">
+                        Forgot Password
+                      </h1>
+                      <button
+                        type="button"
+                        className="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                        onClick={() => setShow(false)}
+                      ></button>
+                    </div>
+                    <div className="modal-body">
+                      <div className="mb-3">
+                        <form>
+                          <label
+                            htmlFor="exampleInputPhone1"
+                            className="form-label"
+                          >
+                            Phone No.
+                          </label>
+                          <div className="row">
+                            <div className="col-8">
+                              <input
+                                type="tel"
+                                className="form-control"
+                                id="exampleInputPhone1"
+                                disabled={isSentOtp}
+                                onChange={(e) => {
+                                  setPhone(e.target.value);
+                                }}
+                              />
+                            </div>
+                            <div className="col-4">
+                              <button
+                                type="button"
+                                className="btn btn-primary"
+                                disabled={isSentOtp}
+                                onClick={sentOtp}
+                              >
+                                Get OTP
+                              </button>
+                            </div>
+                          </div>
+                        </form>
+                        {isSentOtp && (
+                          <form>
+                            <div className="mb-3">
+                              <label htmlFor="otpInput" className="form-label">
+                                OTP
+                              </label>
+                              <input
+                                type="number"
+                                className="form-control w-50"
+                                id="otpInput"
+                                onChange={(e) => setOtp(e.target.value)}
+                              />
+                            </div>
+                            <div className="mb-3">
+                              <label
+                                htmlFor="newPasswordInput"
+                                className="form-label"
+                              >
+                                New Password
+                              </label>
+                              <input
+                                type="password"
+                                className="form-control w-50"
+                                id="newPasswordInput"
+                                onChange={(e) =>
+                                  setResetPassword(e.target.value)
+                                }
+                              />
+                            </div>
+                            <div className="mb-3">
+                              <label
+                                htmlFor="confirmPasswordInput"
+                                className="form-label"
+                              >
+                                Confirm Password
+                              </label>
+                              <input
+                                type="password"
+                                className="form-control w-50"
+                                id="confirmPasswordInput"
+                                onChange={(e) =>
+                                  setConfirmPassword(e.target.value)
+                                }
+                              />
+                            </div>
+                            <button
+                              type="button"
+                              className="btn btn-primary"
+                              onClick={handleReset}
+                            >
+                              Reset Password
+                            </button>
+                          </form>
+                        )}
+                      </div>
+                    </div>
+                    <div className="modal-footer">
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                        onClick={() => setShow(false)}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : null}
+        </p>
         <p>
           {currState === "Login" ? (
             <>
