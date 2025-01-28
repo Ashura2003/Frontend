@@ -1,6 +1,7 @@
 import axios from "axios";
 import "react";
 import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { assets } from "../../assets/assets";
 import { StoreContext } from "../../context/StoreContext";
 import "./MyOrders.css";
@@ -9,6 +10,41 @@ const MyOrders = () => {
   const { url } = useContext(StoreContext);
   const [data, setData] = useState([]);
   const token = localStorage.getItem("token");
+
+  const reOrder = async (order) => {
+    const confirmReOrder = window.confirm("Are you sure you want to re-order?");
+
+    if (confirmReOrder) {
+      let orderItems = [];
+      try {
+        const response = await axios.post(
+          `${url}/order/placeOrder`,
+          {
+            items: order.items,
+            amount: order.amount,
+            address: order.address,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          const { session_url } = response.data;
+          window.location.replace(session_url);
+          toast.success("Re-order placed successfully");
+        } else {
+          toast.error("Failed to place re-order. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error placing re-order:", error);
+        alert("Failed to place re-order. Please try again.");
+      }
+    } else {
+      return;
+    }
+  };
 
   const fetchOrders = async () => {
     console.log(token);
@@ -53,6 +89,12 @@ const MyOrders = () => {
                 <span>&#x25cf;</span> <b>{order.status}</b>
               </p>
               <button onClick={fetchOrders}>Track Order</button>
+              <button
+                className="re-order-button"
+                onClick={() => reOrder(order)}
+              >
+                Re-Order
+              </button>
             </div>
           );
         })}

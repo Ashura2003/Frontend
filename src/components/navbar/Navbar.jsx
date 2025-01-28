@@ -9,7 +9,7 @@ import "./Navbar.css";
 const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("Home");
 
-  const { getTotalCartAmount } = useContext(StoreContext);
+  const { getTotalCartAmount, setCartItems } = useContext(StoreContext);
   const getToken = localStorage.getItem("token");
   const navigate = useNavigate();
 
@@ -18,6 +18,7 @@ const Navbar = ({ setShowLogin }) => {
     if (confirmLogout) {
       localStorage.removeItem("token");
       navigate("/");
+      setCartItems({});
       toast.success("Logged out successfully");
     } else {
       return;
